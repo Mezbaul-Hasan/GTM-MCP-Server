@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    name: tests (${{ matrix.os }}, py${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install (editable) with dev extras — pulls marketing-mcp-common from its pinned git tag
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Test gtm-mcp (34 tools, mocked Tag Manager API)
+        run: pytest -q
+      - name: CLI smoke
+        run: gtm-mcp help
+
+  uvx-install:
+    name: uvx install check (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: astral-sh/setup-uv@v6
+      - name: Install gtm-mcp from this commit exactly like a teammate would
+        shell: bash
+        run: uvx --from "git+https://github.com/${{ github.repository }}@${{ github.sha }}" gtm-mcp help

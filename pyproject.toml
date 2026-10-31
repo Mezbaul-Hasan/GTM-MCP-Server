@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gtm-mcp"
+version = "0.1.0"
+description = "MCP server for Google Tag Manager (API v2) — read + audit tools, workspace-only writes with dry-run previews, quota-aware, local stdio, Google OAuth browser sign-in"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Md. Mezbaul Hasan" }]
+keywords = ["mcp", "google-tag-manager", "gtm", "model-context-protocol"]
+dependencies = [
+    "mcp[cli]>=2,<3",
+    "httpx>=0.27,<1",
+    # Shared library (Google OAuth desktop flow, httpx client with retry + rate limiter, error mapping,
+    # redaction, output budget, audit log). Lives in the GA4-MCP-Server repo; pinned to a tag so installs
+    # are reproducible — bump the tag deliberately when common changes.
+    "marketing-mcp-common @ git+https://github.com/Mezbaul-Hasan/GA4-MCP-Server@common-v0.1.1#subdirectory=common",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "anyio>=4", "respx>=0.21"]
+
+[project.scripts]
+gtm-mcp = "gtm_mcp.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Mezbaul-Hasan/GTM-MCP-Server"
+Changelog = "https://github.com/Mezbaul-Hasan/GTM-MCP-Server/blob/main/CHANGELOG.md"
+"Shared library" = "https://github.com/Mezbaul-Hasan/GA4-MCP-Server/tree/main/common"
+
+# Teammates install with:
+#   uvx --from git+https://github.com/Mezbaul-Hasan/GTM-MCP-Server gtm-mcp
+
+[tool.setuptools.packages.find]
+include = ["gtm_mcp*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
