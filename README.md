@@ -10,8 +10,9 @@ one 🔴 tool, `gtm_publish_version`. No delete and no user-management tools exi
 Sister project: [GA4-MCP-Server](https://github.com/Mezbaul-Hasan/GA4-MCP-Server) (Google Analytics 4). Both servers share
 the small Python library `marketing-mcp-common` (Google OAuth desktop flow, httpx client with retry + rate limiter, error
 mapping, redaction, audit log), which lives in that repo under `common/` and is installed automatically from a pinned tag
-(see `pyproject.toml`). You can use the **same Google Cloud OAuth client** for both servers. Programme-wide rules and
-status: [PROJECT.md](https://github.com/Mezbaul-Hasan/GA4-MCP-Server/blob/main/PROJECT.md).
+(see `pyproject.toml`). You can use the **same Google Cloud OAuth client** for both servers.
+Status, scope decisions and log of this server: **[PROJECT.md](PROJECT.md)**; programme-wide conventions (risk tiers,
+auth rules, access roles): [GA4-MCP-Server/PROJECT.md](https://github.com/Mezbaul-Hasan/GA4-MCP-Server/blob/main/PROJECT.md).
 
 ## 1. Setup (one time)
 
